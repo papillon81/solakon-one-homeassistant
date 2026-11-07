@@ -44,6 +44,9 @@
       },
       "remote_timeout_set": {
         "default": "mdi:timer"
+      },
+      "idle_load_power_threshold": {
+        "default": "mdi:sleep"
       }
     },
     "select": {
@@ -58,6 +61,9 @@
       },
       "remote_control_mode": {
         "default": "mdi:remote"
+      },
+      "operating_mode": {
+        "default": "mdi:cog"
       }
     },
     "sensor": {
@@ -139,6 +145,17 @@
       },
       "total_pv_power": {
         "default": "mdi:solar-power"
+      }
+    },
+    "switch": {
+      "buzzer": {
+        "default": "mdi:volume-high",
+        "state": {
+          "off": "mdi:volume-off"
+        }
+      },
+      "idle_state": {
+        "default": "mdi:sleep"
       }
     }
   }

@@ -25,7 +25,7 @@ def _default_keys():
     }
 
 
-def test_default_entities_read_five_fast_and_four_slow_batches() -> None:
+def test_default_entities_read_five_fast_and_eight_slow_batches() -> None:
     keys = _default_keys()
     fast = compute_register_batches(REGISTERS, slow=False, keys=keys)
     slow = compute_register_batches(REGISTERS, slow=True, keys=keys)
@@ -37,7 +37,16 @@ def test_default_entities_read_five_fast_and_four_slow_batches() -> None:
         (46001, 7),
         (46607, 11),
     ]
-    assert _spans(slow) == [(37611, 25), (38801, 1), (38901, 1), (39601, 26)]
+    assert _spans(slow) == [
+        (37611, 25),
+        (38801, 1),
+        (38901, 1),
+        (39601, 26),
+        (49203, 1),
+        (49209, 1),
+        (49229, 1),
+        (49230, 1),
+    ]
 
 
 def test_gaps_are_bridged_only_inside_verified_spans() -> None:
@@ -50,6 +59,15 @@ def test_gaps_are_bridged_only_inside_verified_spans() -> None:
     assert (49203, 1) in slow
     assert (49240, 1) in slow
     assert (49079, 1) in _spans(compute_register_batches(REGISTERS, static=True))
+
+
+def test_solo_registers_are_read_alone() -> None:
+    slow = _spans(compute_register_batches(REGISTERS, slow=True))
+
+    # Adjacent or close registers are not bridged when one of them is solo
+    assert (49209, 1) in slow
+    assert (49229, 1) in slow
+    assert (49230, 1) in slow
 
 
 def test_versions_are_static() -> None:

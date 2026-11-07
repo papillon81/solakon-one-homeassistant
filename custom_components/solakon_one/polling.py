@@ -13,13 +13,18 @@ from .const import REGISTERS
 from .number import NUMBER_ENTITY_DESCRIPTIONS
 from .select import SELECT_ENTITY_DESCRIPTIONS
 from .sensor import SENSOR_ENTITY_DESCRIPTIONS, SolakonSensorEntityDescription
+from .switch import SWITCH_ENTITY_DESCRIPTIONS
 from .types import SolakonConfigEntry
 
-# Registers read by number and select entities; the remote control and force
+# Registers read by number, select and switch entities; the remote control and force
 # mode selects read register remote_control.
 CONTROL_KEYS = {
     d.key
-    for d in (*NUMBER_ENTITY_DESCRIPTIONS, *SELECT_ENTITY_DESCRIPTIONS)
+    for d in (
+        *NUMBER_ENTITY_DESCRIPTIONS,
+        *SELECT_ENTITY_DESCRIPTIONS,
+        *SWITCH_ENTITY_DESCRIPTIONS,
+    )
     if d.key in REGISTERS
 } | {"remote_control"}
 

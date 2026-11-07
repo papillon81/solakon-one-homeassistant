@@ -20,6 +20,7 @@ PLATFORMS = [
     Platform.NUMBER,
     Platform.SELECT,
     Platform.SENSOR,
+    Platform.SWITCH,
 ]
 
 # fmt: off
@@ -193,5 +194,12 @@ REGISTERS = {
     "minimum_soc_ongrid": {"address": 46611, "count": 1, "type": "u16", "scale": 1, "unit": "%", "rw": True},
     "operating_mode": {"address": 49203, "count": 1, "type": "u16", "scale": 1, "rw": True, "interval": "slow"}, # work_mode
     "network_status": {"address": 49240, "count": 1, "type": "u16", "scale": 1, "interval": "slow"},
+
+    # Extra settings from the FoxESS register map, not verified on every firmware.
+    # "solo": the device truncates bridged reads in the 49xxx range, so each of
+    # these is read on its own and an unsupported one can't break other reads.
+    "buzzer": {"address": 49209, "count": 1, "type": "u16", "scale": 1, "rw": True, "interval": "slow", "solo": True},
+    "idle_state": {"address": 49229, "count": 1, "type": "u16", "scale": 1, "rw": True, "interval": "slow", "solo": True},
+    "idle_load_power_threshold": {"address": 49230, "count": 1, "type": "u16", "scale": 1, "unit": "W", "rw": True, "interval": "slow", "solo": True},
 }
 # fmt: on

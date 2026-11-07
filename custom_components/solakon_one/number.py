@@ -109,6 +109,17 @@ NUMBER_ENTITY_DESCRIPTIONS: tuple[NumberEntityDescription, ...] = (
         entity_registry_enabled_default=False,
     ),
     NumberEntityDescription(
+        key="idle_load_power_threshold",
+        mode=NumberMode.BOX,
+        device_class=NumberDeviceClass.POWER,
+        entity_category=EntityCategory.CONFIG,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        native_min_value=100,
+        native_max_value=600,
+        native_step=10,
+        entity_registry_enabled_default=False,
+    ),
+    NumberEntityDescription(
         key="grid_export_power_limit",
         mode=NumberMode.BOX,
         device_class=NumberDeviceClass.POWER,

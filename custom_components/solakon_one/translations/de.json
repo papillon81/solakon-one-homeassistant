@@ -86,6 +86,9 @@
       },
       "remote_timeout_set": {
         "name": "Fernsteuerung Zeitüberschreitung"
+      },
+      "idle_load_power_threshold": {
+        "name": "Leerlauf-Lastschwelle"
       }
     },
     "select": {
@@ -117,6 +120,17 @@
           "5": "Batterie entladen",
           "7": "Batterie laden",
           "9": "Netz export"
+        }
+      },
+      "operating_mode": {
+        "name": "Betriebsart",
+        "state": {
+          "1": "Eigenverbrauch",
+          "2": "Einspeisepriorität",
+          "3": "Backup",
+          "4": "Spitzenlastkappung",
+          "6": "Laden erzwingen",
+          "7": "Entladen erzwingen"
         }
       }
     },
@@ -332,6 +346,14 @@
       },
       "total_pv_power": {
         "name": "PV Leistung"
+      }
+    },
+    "switch": {
+      "buzzer": {
+        "name": "Summer"
+      },
+      "idle_state": {
+        "name": "Leerlaufmodus"
       }
     }
   },

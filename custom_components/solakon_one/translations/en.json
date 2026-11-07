@@ -86,6 +86,9 @@
       },
       "remote_timeout_set": {
         "name": "Remote control timeout"
+      },
+      "idle_load_power_threshold": {
+        "name": "Idle load power threshold"
       }
     },
     "select": {
@@ -117,6 +120,17 @@
           "5": "Battery discharge",
           "7": "Battery charge",
           "9": "Grid export"
+        }
+      },
+      "operating_mode": {
+        "name": "Operating mode",
+        "state": {
+          "1": "Self use",
+          "2": "Feed-in priority",
+          "3": "Backup",
+          "4": "Peak shaving",
+          "6": "Force charge",
+          "7": "Force discharge"
         }
       }
     },
@@ -332,6 +346,14 @@
       },
       "total_pv_power": {
         "name": "PV power"
+      }
+    },
+    "switch": {
+      "buzzer": {
+        "name": "Buzzer"
+      },
+      "idle_state": {
+        "name": "Idle mode"
       }
     }
   },

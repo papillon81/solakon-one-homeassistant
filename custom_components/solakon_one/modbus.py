@@ -97,6 +97,7 @@ def compute_register_batches(
     batch_keys: list[tuple[str, int, int, dict[str, Any]]] = [
         (entries[0][0], 0, entries[0][1].get("count", 1), entries[0][1])
     ]
+    batch_solo = entries[0][1].get("solo", False)
 
     for key, config in entries[1:]:
         addr = config["address"]
@@ -108,6 +109,9 @@ def compute_register_batches(
         new_total = entry_end - batch_start
 
         fits = gap <= _BATCH_GAP_THRESHOLD or _same_span(batch_start, entry_end)
+        # Registers marked "solo" are never read together with others
+        solo = config.get("solo", False)
+        fits = fits and not solo and not batch_solo
         if fits and new_total <= _MAX_BATCH_SIZE:
             # Extend the batch
             offset = addr - batch_start
@@ -126,6 +130,7 @@ def compute_register_batches(
             batch_start = addr
             batch_end = entry_end
             batch_keys = [(key, 0, count, config)]
+            batch_solo = solo
 
     # Finalize last batch
     batches.append(

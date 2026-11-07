@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 
 from homeassistant.components.select import SelectEntity, SelectEntityDescription
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -26,19 +27,6 @@ from .types import SolakonConfigEntry
 
 _LOGGER = logging.getLogger(__name__)
 
-# "work_mode": {
-#     "name": "Work Mode Control",
-#     "icon": "mdi:cog",
-#     "options": {
-#         1: "Self Use",
-#         2: "Feedin Priority",
-#         3: "Backup",
-#         4: "Peak Shaving",
-#         6: "Force Charge",
-#         7: "Force Discharge",
-#     },
-# },
-
 # Select entity definitions for Home Assistant
 SELECT_ENTITY_DESCRIPTIONS: tuple[SelectEntityDescription, ...] = (
     SelectEntityDescription(
@@ -47,6 +35,21 @@ SELECT_ENTITY_DESCRIPTIONS: tuple[SelectEntityDescription, ...] = (
             "0",  # Disable
             "2",  # EPS Mode
             "3",  # UPS Mode
+        ],
+    ),
+    # Work mode (49203). The device reports 0 when no mode is set; 0 can't be
+    # written. An active remote control (46001) takes precedence over it.
+    SelectEntityDescription(
+        key="operating_mode",
+        entity_category=EntityCategory.CONFIG,
+        entity_registry_enabled_default=False,
+        options=[
+            "1",  # Self Use
+            "2",  # Feed-in Priority
+            "3",  # Backup
+            "4",  # Peak Shaving
+            "6",  # Force Charge
+            "7",  # Force Discharge
         ],
     ),
 )
@@ -87,7 +90,7 @@ async def async_setup_entry(
 
     entities: list[SolakonSelect] = []
     entities.extend(
-        SolakonSelect(
+        (WorkModeSelect if description.key == "operating_mode" else SolakonSelect)(
             config_entry,
             device_info,
             description,
@@ -423,3 +426,16 @@ class ForceModeSelect(SolakonEntity, SelectEntity):
     def available(self) -> bool:
         """Return if entity is available."""
         return self.coordinator.last_update_success
+
+
+class WorkModeSelect(SolakonSelect):
+    """Work mode select that shows the unset mode 0 as unknown without a warning."""
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        if (self.coordinator.data or {}).get(self.entity_description.key) == 0:
+            self._attr_current_option = None  # type: ignore[assignment]
+            self.async_write_ha_state()
+            return
+        super()._handle_coordinator_update()
