@@ -20,7 +20,7 @@ from .remote_control import RemoteControlDirection, decode_remote_control
 
 _LOGGER = logging.getLogger(__name__)
 
-MAX_DISCHARGE_POWER = 800  # W
+MAX_DISCHARGE_POWER = 1200  # W
 MAX_CHARGE_POWER = 1200  # W
 
 # Setpoints that are used as the power command while remote control is active
